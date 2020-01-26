@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,16 +20,18 @@
 </style>
 </head>
 <body translate="no">
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6">
-
-</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<audio id="sad" controls>
-<source src="snd/sad.mp3" type="audio/mpeg">
+<audio id="sad" style="display:none" controls>
+<source src="https://math.seattleacademy.org/garyanderson/snd/sad.mp3" type="audio/mpeg">
+Your browser does not support the audio tag
 </audio>
-<h1>Math Tastic Things</h1>
-<div>Timer: <span id="theTime">0</span> Score: <span id="score">0</span></div>
-<ol>
+<h1>Mathtastic Things<h1>
+<div>Timer: <span id="theTime">0</span></div>
+<input type="button" onclick="reset()" value="Restart">
+<h2>score = <span id="score">0</span></h2>
+<form id="problems">
+<ul id="problems">
 <li>\( 2^3 \) <input data-correct="8" /> </li>
 <li>\( \sqrt[3]{8} \) <input data-correct="2" /></li>
 <li>\( 8^\frac{1}{3} \) <input data-correct="2" /></li>
@@ -39,40 +42,57 @@
 <li>\( 8^5 \) <input data-correct="32768" /></li>
 <li>\( 6^3 \) <input data-correct="216" /></li>
 <li>\( 64^\frac{1}{3}\) <input data-correct="4" /></li>
-</ol>
+</ul>
+</form>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
 <script id="rendered-js">
 console.clear();
-const sad = document.getElementById("sad");
-setInterval(upTime, 1000);
 
-function upTime() {
-  let theTime = Number($("#theTime").text());
-  theTime = theTime + 1;
-  $("#theTime").text(theTime);
+
+console.log(sad);
+function playSad(evt){
+  sad.play();
 }
+playSad();
 $("input").change(onChange);
 
-function onChange(evt) {
-  let correct = $(this).data("correct");
-  let response = $(this).val();
+setInterval(upTime,1000);
 
-  if (correct == response) {
-    $(this)
-      .removeClass("incorrect")
-      .addClass("correct");
-    let theScore = Number($("#score").text());
-    theScore = theScore + 1;
-    $("#score").text(theScore);
-  } else {
-    if (Math.random() > 0.1) {
-      sad.play();
-    }
-    $(this)
-      .removeClass("correct")
-      .addClass("incorrect");
+function onChange(evt){
+  console.log("onChange");
+  let correct =$(this).data("correct");
+  let response = $(this).val();
+  console.log(correct,response);
+  if(correct == response){
+    console.log("correct");  $(this).removeClass("incorrect").addClass("correct");
+    score = $("#score").text();
+    score = Number(score) + 1;
+    $('#score').text(score);
+    console.log(Number(score)+" score");
+    
+  }else{
+    console.log("incorrect");
+    $(this).removeClass("correct").addClass("incorrect");
+    score = $("#score").text();
+    score = Number(score) - 1;
+    $('#score').text(score);
+    console.log(Number(score)+" score");
+    playSad();
   }
+}
+function reset(){
+    $('#score').text(0);
+    document.getElementById("problems").reset();
+    let theTime = $("#theTime").text();
+    $("#theTime").text("0");
+}
+function upTime(){
+  let theTime = $("#theTime").text();
+  theTime = Number(theTime) + 1;
+  $("#theTime").text(theTime);
 }
     </script>
 </body>
